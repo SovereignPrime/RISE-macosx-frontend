@@ -7,10 +7,13 @@
 //
 
 #import "appAppDelegate.h"
+#import <Foundation/Foundation.h>
 
 @implementation appAppDelegate
 
 @synthesize window = _window;
+
+@synthesize webUI = _webUI;
 
 - (void)dealloc
 {
@@ -19,7 +22,12 @@
 	
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    id backend = [NSTask launchedTaskWithLaunchPath:@"/opt/rise/bin/nitrogen" arguments:[NSArray arrayWithObject:@"start"]];
+    [backend waitUntilExit];
+    id responce = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost:8000"]];
+    while ([NSURLConnection connectionWithRequest:responce delegate:nil] == nil);
+    //[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost:8000"]];
+    [[self.webUI mainFrame] loadRequest:responce];
 }
 
 @end
