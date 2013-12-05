@@ -24,9 +24,9 @@
 {
     id backend = [NSTask launchedTaskWithLaunchPath:@"/opt/rise/bin/nitrogen" arguments:[NSArray arrayWithObject:@"start"]];
     [backend waitUntilExit];
+    
+    while ([NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://localhost:8000"]] == nil);
     id responce = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost:8000"]];
-    while ([NSURLConnection connectionWithRequest:responce delegate:nil] == nil);
-    //[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost:8000"]];
     [[self.webUI mainFrame] loadRequest:responce];
 }
 

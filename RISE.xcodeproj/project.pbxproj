@@ -483,6 +483,7 @@
 				63D8087C1850A92700B5E957 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		63F4D8E4184FA3E900358508 /* Build configuration list for PBXProject "RISE" */ = {
 			isa = XCConfigurationList;
