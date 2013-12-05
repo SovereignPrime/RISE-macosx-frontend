@@ -9,6 +9,9 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 @interface appAppDelegate : NSObject <NSApplicationDelegate>
+{
+ id backend;
+ }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet WebView *webUI;

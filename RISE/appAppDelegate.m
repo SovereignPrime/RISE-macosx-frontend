@@ -22,12 +22,18 @@
 	
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    id backend = [NSTask launchedTaskWithLaunchPath:@"/opt/rise/bin/nitrogen" arguments:[NSArray arrayWithObject:@"start"]];
+    backend = [NSTask launchedTaskWithLaunchPath:@"/opt/rise/bin/nitrogen" arguments:[NSArray arrayWithObject:@"start"]];
     [backend waitUntilExit];
     
     while ([NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://localhost:8000"]] == nil);
     id responce = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost:8000"]];
     [[self.webUI mainFrame] loadRequest:responce];
+}
+- (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
+{
+    backend = [NSTask launchedTaskWithLaunchPath:@"/opt/rise/bin/nitrogen" arguments:[NSArray arrayWithObject:@"stop"]];
+    //[backend waitUntilExit];
+    return NSTerminateNow;
 }
 
 @end
