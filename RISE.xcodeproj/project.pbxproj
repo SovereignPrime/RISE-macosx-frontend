@@ -34,17 +34,17 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		63D137E518509C58008F4FA0 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
-			dstSubfolderSpec = 7;
+			dstSubfolderSpec = 0;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6374622D1850DE7E00C05D7F /* rise.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = rise.icns; sourceTree = "<group>"; };
+		6374622D1850DE7E00C05D7F /* rise.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = rise.icns; path = ../rise.icns; sourceTree = "<group>"; };
 		63D137DD18509496008F4FA0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		63F4D8EA184FA3EA00358508 /* RISE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RISE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F4D8EE184FA3EA00358508 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -92,7 +92,6 @@
 		63F4D8DF184FA3E900358508 = {
 			isa = PBXGroup;
 			children = (
-				6374622D1850DE7E00C05D7F /* rise.icns */,
 				63F4D8F4184FA3EA00358508 /* RISE */,
 				63F4D911184FA3EA00358508 /* RISETests */,
 				63F4D8ED184FA3EA00358508 /* Frameworks */,
@@ -144,6 +143,7 @@
 		63F4D8F5184FA3EA00358508 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6374622D1850DE7E00C05D7F /* rise.icns */,
 				63F4D8F6184FA3EA00358508 /* RISE-Info.plist */,
 				63F4D8F7184FA3EA00358508 /* InfoPlist.strings */,
 				63F4D8FA184FA3EA00358508 /* main.m */,
@@ -173,23 +173,6 @@
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
-
-/* Begin PBXLegacyTarget section */
-		63D808791850A92700B5E957 /* RISE-backend */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = compile;
-			buildConfigurationList = 63D8087A1850A92700B5E957 /* Build configuration list for PBXLegacyTarget "RISE-backend" */;
-			buildPhases = (
-			);
-			buildToolPath = /usr/bin/make;
-			buildWorkingDirectory = /Users/macuser/Documents/Resources;
-			dependencies = (
-			);
-			name = "RISE-backend";
-			passBuildSettingsInEnvironment = 1;
-			productName = "RISE-backend";
-		};
-/* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
 		63F4D8E9184FA3EA00358508 /* RISE */ = {
@@ -251,7 +234,6 @@
 			targets = (
 				63F4D8E9184FA3EA00358508 /* RISE */,
 				63F4D90A184FA3EA00358508 /* RISETests */,
-				63D808791850A92700B5E957 /* RISE-backend */,
 			);
 		};
 /* End PBXProject section */
@@ -358,30 +340,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		63D8087B1850A92700B5E957 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUGGING_SYMBOLS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		63D8087C1850A92700B5E957 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		63F4D91A184FA3EA00358508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -433,6 +391,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RISE/RISE-Prefix.pch";
 				INFOPLIST_FILE = "RISE/RISE-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../Resources/erts-5.10.3/lib/internal\"",
+					"\"$(SRCROOT)/../Resources/erts-5.10.3/lib\"",
+					"\"$(SRCROOT)/../Resources/lib/erl_interface-3.7.13/lib\"",
+					"\"$(SRCROOT)/../Resources/lib/ic-4.3.2/priv/lib\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -444,6 +409,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RISE/RISE-Prefix.pch";
 				INFOPLIST_FILE = "RISE/RISE-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../Resources/erts-5.10.3/lib/internal\"",
+					"\"$(SRCROOT)/../Resources/erts-5.10.3/lib\"",
+					"\"$(SRCROOT)/../Resources/lib/erl_interface-3.7.13/lib\"",
+					"\"$(SRCROOT)/../Resources/lib/ic-4.3.2/priv/lib\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -480,15 +452,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		63D8087A1850A92700B5E957 /* Build configuration list for PBXLegacyTarget "RISE-backend" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				63D8087B1850A92700B5E957 /* Debug */,
-				63D8087C1850A92700B5E957 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		63F4D8E4184FA3E900358508 /* Build configuration list for PBXProject "RISE" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
