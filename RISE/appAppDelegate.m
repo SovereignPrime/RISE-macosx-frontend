@@ -22,10 +22,24 @@
 	
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    
-    //bool r = [conf copyItemAtPath:@"/usr/local/rise/etc/app.config" toPath:@"$HOME/Library/rise" error:&err];
-    //[conf createDirectoryAtPath:@"~/Library/test" withIntermediateDirectories:YES attributes:nil error:nil];
-    backend = [NSTask launchedTaskWithLaunchPath:@"/usr/local/rise/bin/nitrogen" arguments:[NSArray arrayWithObject:@"start"]];
+    backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
+    [backendPath retain];
+    NSFileManager * conf = [NSFileManager defaultManager];
+    NSError * err = nil;
+    NSEnumerator * confUrls = [[conf URLsForDirectory: NSLibraryDirectory inDomains:NSUserDomainMask] objectEnumerator];    
+    id obj;
+    while (obj = [confUrls nextObject]) {
+        NSString * path = [[NSURL URLWithString:@"rise" relativeToURL: obj] path];
+        NSLog(path);
+        //[conf createDirectoryAtPath: path withIntermediateDirectories:YES attributes:nil error:nil];
+        NSString * from = [backendPath stringByAppendingPathComponent: @"etc"];
+        NSLog(from);
+        [conf copyItemAtPath: from toPath:path error: &err];
+        NSLog([err localizedDescription]);
+    }
+    NSString * binPath = [backendPath stringByAppendingPathComponent: @"bin/nitrogen"];
+    NSLog(binPath);
+    backend = [NSTask launchedTaskWithLaunchPath: binPath arguments:[NSArray arrayWithObject:@"start"]];
     [backend waitUntilExit];
     
     while ([NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://localhost:8000"]] == nil);
@@ -34,7 +48,9 @@
 }
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
 {
-    backend = [NSTask launchedTaskWithLaunchPath:@"/usr/local/rise/bin/nitrogen" arguments:[NSArray arrayWithObject:@"stop"]];
+    
+    NSString * bin = [backendPath stringByAppendingPathComponent: @"bin/nitrogen"]; 
+     backend = [NSTask launchedTaskWithLaunchPath:bin arguments:[NSArray arrayWithObject:@"stop"]];
     //[backend waitUntilExit];
     return NSTerminateNow;
 }
