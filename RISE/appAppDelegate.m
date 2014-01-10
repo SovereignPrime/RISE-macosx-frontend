@@ -31,7 +31,7 @@
     while (obj = [confUrls nextObject]) {
         NSString * path = [[NSURL URLWithString:@"rise" relativeToURL: obj] path];
         NSLog(path);
-        //[conf createDirectoryAtPath: path withIntermediateDirectories:YES attributes:nil error:nil];
+        [conf createDirectoryAtPath: [path stringByAppendingPathComponent:@"spool"]  withIntermediateDirectories:YES attributes:nil error:nil];
         NSString * from = [backendPath stringByAppendingPathComponent: @"etc"];
         NSLog(from);
         [conf copyItemAtPath: from toPath:path error: &err];
