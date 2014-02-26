@@ -83,7 +83,18 @@
         [files release];
     }
     
-}
+- (void)webView:(WebView *)webView 
+   decidePolicyForMIMEType:(NSString *)type 
+                   request:(NSURLRequest *)request 
+                     frame:(WebFrame *)frame 
+          decisionListener:(id < WebPolicyDecisionListener >)listener
+{
+    if([type isEqualToString:@"octet/binary"])
+    {
+        [listener download];
+    }
+    //just ignore all other types; the default behaviour will be used
+}}
 
 
 @end
