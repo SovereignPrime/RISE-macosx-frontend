@@ -36,6 +36,7 @@
         NSLog(from);
         [conf copyItemAtPath: from toPath:path error: &err];
         [conf createDirectoryAtPath: [path stringByAppendingPathComponent:@"spool"]  withIntermediateDirectories:YES attributes:nil error:nil];
+        [conf createDirectoryAtPath: [path stringByAppendingPathComponent:@"scratch"]  withIntermediateDirectories:YES attributes:nil error:nil];
         NSLog([err localizedDescription]);
     }
     NSString * binPath = [backendPath stringByAppendingPathComponent: @"bin/nitrogen"];
@@ -82,19 +83,32 @@
         }
         [files release];
     }
-    
+}
+-(void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)filename
+{
+    NSSavePanel *savePanel = [NSSavePanel savePanel];
+    [savePanel setNameFieldStringValue:filename];
+    if ([savePanel runModal] == NSOKButton ) 
+    {
+        NSString *path = [[savePanel URL] path];
+        [download setDestination: path allowOverwrite:YES];
+    }
+}
 - (void)webView:(WebView *)webView 
    decidePolicyForMIMEType:(NSString *)type 
                    request:(NSURLRequest *)request 
                      frame:(WebFrame *)frame 
           decisionListener:(id < WebPolicyDecisionListener >)listener
 {
+    NSLog(type);
     if([type isEqualToString:@"octet/binary"])
     {
         [listener download];
     }
     //just ignore all other types; the default behaviour will be used
-}}
+}
+
 
 
 @end
+

@@ -9,7 +9,9 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 #import <WebKit/WebUIDelegate.h>
-@interface appAppDelegate : NSObject <NSApplicationDelegate, NSURLDownloadDelegate, WebDownloadDelegate>
+#import <WebKit/WebPolicyDelegate.h>
+
+@interface appAppDelegate : NSObject <NSApplicationDelegate>
 {
  id backend;
     NSString * backendPath;
