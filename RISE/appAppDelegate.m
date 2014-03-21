@@ -25,7 +25,7 @@
     backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
     [backendPath retain];
     NSFileManager * conf = [NSFileManager defaultManager];
-    NSError * err = nil;
+    /* NSError * err = nil;
     NSEnumerator * confUrls = [[conf URLsForDirectory: NSLibraryDirectory inDomains:NSUserDomainMask] objectEnumerator];    
     id obj;
     while (obj = [confUrls nextObject]) {
@@ -38,7 +38,7 @@
         [conf createDirectoryAtPath: [path stringByAppendingPathComponent:@"spool"]  withIntermediateDirectories:YES attributes:nil error:nil];
         [conf createDirectoryAtPath: [path stringByAppendingPathComponent:@"scratch"]  withIntermediateDirectories:YES attributes:nil error:nil];
         NSLog([err localizedDescription]);
-    }
+    }*/
     NSString * binPath = [backendPath stringByAppendingPathComponent: @"bin/rise"];
     NSLog(binPath);
     backend = [NSTask launchedTaskWithLaunchPath: binPath arguments:[NSArray arrayWithObject:@"start"]];
