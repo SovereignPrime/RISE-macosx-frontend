@@ -39,7 +39,7 @@
         [conf createDirectoryAtPath: [path stringByAppendingPathComponent:@"scratch"]  withIntermediateDirectories:YES attributes:nil error:nil];
         NSLog([err localizedDescription]);
     }
-    NSString * binPath = [backendPath stringByAppendingPathComponent: @"bin/nitrogen"];
+    NSString * binPath = [backendPath stringByAppendingPathComponent: @"bin/rise"];
     NSLog(binPath);
     backend = [NSTask launchedTaskWithLaunchPath: binPath arguments:[NSArray arrayWithObject:@"start"]];
     [backend waitUntilExit];
@@ -50,8 +50,8 @@
 }
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
 {
-    
-    NSString * bin = [backendPath stringByAppendingPathComponent: @"bin/nitrogen"]; 
+
+    NSString * bin = [backendPath stringByAppendingPathComponent: @"bin/rise"]; 
      backend = [NSTask launchedTaskWithLaunchPath:bin arguments:[NSArray arrayWithObject:@"stop"]];
     //[backend waitUntilExit];
     return NSTerminateNow;
