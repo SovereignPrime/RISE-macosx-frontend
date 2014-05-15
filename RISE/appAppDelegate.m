@@ -24,22 +24,8 @@
 {
     backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
     [backendPath retain];
-    NSFileManager * conf = [NSFileManager defaultManager];
-    /* NSError * err = nil;
-    NSEnumerator * confUrls = [[conf URLsForDirectory: NSLibraryDirectory inDomains:NSUserDomainMask] objectEnumerator];    
-    id obj;
-    while (obj = [confUrls nextObject]) {
-        NSString * path = [[NSURL URLWithString:@"rise" relativeToURL: obj] path];
-        NSLog(path);
-       
-        NSString * from = [backendPath stringByAppendingPathComponent: @"etc"];
-        NSLog(from);
-        [conf copyItemAtPath: from toPath:path error: &err];
-        [conf createDirectoryAtPath: [path stringByAppendingPathComponent:@"spool"]  withIntermediateDirectories:YES attributes:nil error:nil];
-        [conf createDirectoryAtPath: [path stringByAppendingPathComponent:@"scratch"]  withIntermediateDirectories:YES attributes:nil error:nil];
-        NSLog([err localizedDescription]);
-    }*/
-    NSString * binPath = [backendPath stringByAppendingPathComponent: @"bin/rise"];
+    NSFileManager *conf = [NSFileManager defaultManager];
+    NSString *binPath = [backendPath stringByAppendingPathComponent: @"bin/rise"];
     NSLog(binPath);
     backend = [NSTask launchedTaskWithLaunchPath: binPath arguments:[NSArray arrayWithObject:@"start"]];
     [backend waitUntilExit];
