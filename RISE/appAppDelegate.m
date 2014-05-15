@@ -29,9 +29,10 @@
     NSLog(binPath);
     backend = [NSTask launchedTaskWithLaunchPath: binPath arguments:[NSArray arrayWithObject:@"start"]];
     [backend waitUntilExit];
-    
-    while ([NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://localhost:8000"]] == nil);
-    id responce = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost:8000"]];
+    while (![conf fileExistsAtPath: @"/tmp/rise.port"]);
+    NSString *port = [NSString stringWithContentsOfFile: @"/tmp/rise.port" encoding: NSASCIIStringEncoding error: nil];
+    NSString *url = [@"http://localhost:" stringByAppendingString: port];
+    id responce = [NSURLRequest requestWithURL:[NSURL URLWithString: url]];
     [[self.webUI mainFrame] loadRequest:responce];
 }
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
@@ -39,7 +40,6 @@
 
     NSString * bin = [backendPath stringByAppendingPathComponent: @"bin/rise"]; 
      backend = [NSTask launchedTaskWithLaunchPath:bin arguments:[NSArray arrayWithObject:@"stop"]];
-    //[backend waitUntilExit];
     return NSTerminateNow;
 }
 - (void)webView:(WebView *)sender runOpenPanelForFileButtonWithResultListener:(id < WebOpenPanelResultListener >)resultListener
@@ -91,7 +91,6 @@
     {
         [listener download];
     }
-    //just ignore all other types; the default behaviour will be used
 }
 
 
