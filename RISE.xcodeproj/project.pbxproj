@@ -12,13 +12,13 @@
 		63F4D8EF184FA3EA00358508 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63F4D8EE184FA3EA00358508 /* Cocoa.framework */; };
 		63F4D8F9184FA3EA00358508 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 63F4D8F7184FA3EA00358508 /* InfoPlist.strings */; };
 		63F4D8FB184FA3EA00358508 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F4D8FA184FA3EA00358508 /* main.m */; };
-		63F4D8FF184FA3EA00358508 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 63F4D8FD184FA3EA00358508 /* Credits.rtf */; };
 		63F4D902184FA3EA00358508 /* appAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F4D901184FA3EA00358508 /* appAppDelegate.m */; };
 		63F4D905184FA3EA00358508 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63F4D903184FA3EA00358508 /* MainMenu.xib */; };
 		63F4D90D184FA3EA00358508 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63F4D90C184FA3EA00358508 /* SenTestingKit.framework */; };
 		63F4D90E184FA3EA00358508 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63F4D8EE184FA3EA00358508 /* Cocoa.framework */; };
 		63F4D916184FA3EA00358508 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 63F4D914184FA3EA00358508 /* InfoPlist.strings */; };
 		63F4D919184FA3EA00358508 /* RISETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F4D918184FA3EA00358508 /* RISETests.m */; };
+		63F9756D1933563400C11984 /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63F9756C1933563400C11984 /* About.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +55,6 @@
 		63F4D8F8184FA3EA00358508 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		63F4D8FA184FA3EA00358508 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		63F4D8FC184FA3EA00358508 /* RISE-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RISE-Prefix.pch"; sourceTree = "<group>"; };
-		63F4D8FE184FA3EA00358508 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		63F4D900184FA3EA00358508 /* appAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = appAppDelegate.h; sourceTree = "<group>"; };
 		63F4D901184FA3EA00358508 /* appAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = appAppDelegate.m; sourceTree = "<group>"; };
 		63F4D904184FA3EA00358508 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -65,6 +64,7 @@
 		63F4D915184FA3EA00358508 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		63F4D917184FA3EA00358508 /* RISETests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RISETests.h; sourceTree = "<group>"; };
 		63F4D918184FA3EA00358508 /* RISETests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RISETests.m; sourceTree = "<group>"; };
+		63F9756C1933563400C11984 /* About.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = About.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +135,7 @@
 				63F4D900184FA3EA00358508 /* appAppDelegate.h */,
 				63F4D901184FA3EA00358508 /* appAppDelegate.m */,
 				63F4D903184FA3EA00358508 /* MainMenu.xib */,
+				63F9756C1933563400C11984 /* About.xib */,
 				63F4D8F5184FA3EA00358508 /* Supporting Files */,
 			);
 			path = RISE;
@@ -148,7 +149,6 @@
 				63F4D8F7184FA3EA00358508 /* InfoPlist.strings */,
 				63F4D8FA184FA3EA00358508 /* main.m */,
 				63F4D8FC184FA3EA00358508 /* RISE-Prefix.pch */,
-				63F4D8FD184FA3EA00358508 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -244,9 +244,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				63F4D8F9184FA3EA00358508 /* InfoPlist.strings in Resources */,
-				63F4D8FF184FA3EA00358508 /* Credits.rtf in Resources */,
 				63F4D905184FA3EA00358508 /* MainMenu.xib in Resources */,
 				6374622E1850DE7E00C05D7F /* rise.icns in Resources */,
+				63F9756D1933563400C11984 /* About.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,14 +311,6 @@
 				63F4D8F8184FA3EA00358508 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		63F4D8FD184FA3EA00358508 /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				63F4D8FE184FA3EA00358508 /* en */,
-			);
-			name = Credits.rtf;
 			sourceTree = "<group>";
 		};
 		63F4D903184FA3EA00358508 /* MainMenu.xib */ = {

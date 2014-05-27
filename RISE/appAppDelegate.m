@@ -27,6 +27,7 @@
     NSFileManager *conf = [NSFileManager defaultManager];
     NSString *binPath = [backendPath stringByAppendingPathComponent: @"bin/rise"];
     NSLog(binPath);
+    [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
     backend = [NSTask launchedTaskWithLaunchPath: binPath arguments:[NSArray arrayWithObject:@"start"]];
     [backend waitUntilExit];
     while (![conf fileExistsAtPath: @"/tmp/rise.port"]);
