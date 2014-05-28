@@ -25,10 +25,24 @@
     backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
     [backendPath retain];
     NSFileManager *conf = [NSFileManager defaultManager];
-    NSString *binPath = [backendPath stringByAppendingPathComponent: @"bin/rise"];
+    NSString *binPath = [backendPath stringByAppendingPathComponent: @"/erts-5.10.3/bin/erl"];
     NSLog(binPath);
     [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
-    backend = [NSTask launchedTaskWithLaunchPath: binPath arguments:[NSArray arrayWithObject:@"console"]];
+    NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringWithContentsOfFile: @"/releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
+    vsn = [[[vsn companentsSeparatedByString: @" "] lastObject] stringByTrimmingCharractersInSet: [NSCharacterSet whitespaceCharacterSet]];
+    NSArray *args = [NSArray arrayWithObjects:@"-pa", @"./site/ebin", 
+                                              @"-pa", @"./site/iinclude",
+                                              @"-embded", @"-sname", @"rise",
+                                              @"-boot", [@"./releases/" stringByAppendingFormat: @"%@%@", vsn, @"/rise"],
+                                              @"-config", @"./etc/app.config",
+                                              @"-config", @"./etc/bitmessage.config",
+                                              @"-config", @"./etc/cowboy.config",
+                                              @"-config", @"./etc/eminer.config",
+                                              @"-config", @"./etc/etorrent.config",
+                                              @"-config", @"./etc/sync.config",
+                                              @"-args_file", @"./etc/vm.args"
+                                              ];
+    backend = [NSTask launchedTaskWithLaunchPath: binPath arguments: args];
     // [backend waitUntilExit];
     while (![conf fileExistsAtPath: @"/tmp/rise.port"]);
     NSString *port = [NSString stringWithContentsOfFile: @"/tmp/rise.port" encoding: NSASCIIStringEncoding error: nil];
