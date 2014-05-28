@@ -28,19 +28,19 @@
     NSString *binPath = [backendPath stringByAppendingPathComponent: @"/erts-5.10.3/bin/erl"];
     NSLog(binPath);
     [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
-    NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringWithContentsOfFile: @"/releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
+    NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"/releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
     vsn = [[[vsn companentsSeparatedByString: @" "] lastObject] stringByTrimmingCharractersInSet: [NSCharacterSet whitespaceCharacterSet]];
-    NSArray *args = [NSArray arrayWithObjects:@"-pa", @"./site/ebin", 
-                                              @"-pa", @"./site/iinclude",
+    NSArray *args = [NSArray arrayWithObjects:@"-pa", [backendPath stringByAppendingPathComponent: @"/site/ebin"], 
+                                              @"-pa", [backendPath stringByAppendingPathComponent:@"./site/include"],
                                               @"-embded", @"-sname", @"rise",
-                                              @"-boot", [@"./releases/" stringByAppendingFormat: @"%@%@", vsn, @"/rise"],
-                                              @"-config", @"./etc/app.config",
-                                              @"-config", @"./etc/bitmessage.config",
-                                              @"-config", @"./etc/cowboy.config",
-                                              @"-config", @"./etc/eminer.config",
-                                              @"-config", @"./etc/etorrent.config",
-                                              @"-config", @"./etc/sync.config",
-                                              @"-args_file", @"./etc/vm.args"
+                                              @"-boot", [backendPath stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
+                                              @"-config", [backendPath stringByAppendingPathComponent: @"/etc/app.config"],
+                                              @"-config", [backendPath stringByAppendingPathComponent: @"/etc/bitmessage.config" ],
+                                              @"-config", [backendPath stringByAppendingPathComponent: @"/etc/cowboy.config"],
+                                              @"-config", [backendPath stringByAppendingPathComponent:@"/etc/eminer.config"],
+                                              @"-config", [backendPath stringByAppendingPathComponent:@"/etc/etorrent.config"],
+                                              @"-config", [backendPath stringByAppendingPathComponent:@"/etc/sync.config"],
+                                              @"-args_file", [backendPath stringByAppendingPathComponent: @"/etc/vm.args"]
                                               ];
     backend = [NSTask launchedTaskWithLaunchPath: binPath arguments: args];
     // [backend waitUntilExit];
