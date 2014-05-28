@@ -52,7 +52,9 @@
     [backend setEnvironment: env];
     [backend setCurrentDirectoryPath:backendPath];
     [backend setArguments: args];
+    [backend setStandardOutput:[NSPipe pipe]];
     [backend setLaunchPath: binPath ];
+    
     [backend launch];
     // [backend waitUntilExit];
     while (![conf fileExistsAtPath: @"/tmp/rise.port"]);
