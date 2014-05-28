@@ -26,12 +26,12 @@
     backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
     [backendPath retain];
     NSFileManager *conf = [NSFileManager defaultManager];
-    NSString *binPath = [backendPath stringByAppendingPathComponent: @"erts-5.10.3/bin/erl"];
+    NSString *binPath = [backendPath stringByAppendingPathComponent: @"bin/rise"]; //@"erts-5.10.3/bin/erlexec"];
     [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
     NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
     
     vsn = [[[vsn componentsSeparatedByString: @" "] lastObject] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSArray *args = [NSArray arrayWithObjects: @"-pa",  @"./site/ebin", 
+    NSArray *args = [NSArray arrayWithObjects: @"console", /* @"-pa",  @"./site/ebin", 
                                               @"-pa", @"./site/include",
                                               @"-embded", @"-sname", @"rise",
                                               @"-boot", [@"." stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
@@ -41,18 +41,20 @@
                                               @"-config", @"./etc/eminer.config",
                                               @"-config", @"./etc/etorrent.config",
                                               @"-config", @"./etc/sync.config",
-                                              @"-args_file",  @"./etc/vm.args",
+                                              @"-args_file",  @"./etc/vm.args",*/
                      nil
                                               ];
     backend = [NSTask new];
     NSMutableDictionary *env = [NSMutableDictionary dictionaryWithDictionary: [[NSProcessInfo processInfo] environment]];
     
-    [env setObject: backendPath forKey: @"ROOTDIR"]; 
-    [env setObject: [backendPath stringByAppendingPathComponent:@"/site/static"] forKey: @"DOC_ROOT"]; 
-    [backend setEnvironment: env];
+    //[env setObject: backendPath forKey: @"ROOTDIR"]; 
+    //[env setObject: [backendPath stringByAppendingPathComponent:@"/site/static"] forKey: @"DOC_ROOT"]; 
+    //[backend setEnvironment: env];
     [backend setCurrentDirectoryPath:backendPath];
     [backend setArguments: args];
-    [backend setStandardOutput:[NSPipe pipe]];
+    //[backend setStandardOutput:[NSPipe pipe]];
+    //[backend setStandardError:[NSPipe pipe]];
+    //[backend setStandardInput:[NSPipe pipe]];
     [backend setLaunchPath: binPath ];
     
     [backend launch];
