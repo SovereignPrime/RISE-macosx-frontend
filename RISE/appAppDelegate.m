@@ -33,7 +33,7 @@
     NSArray *args = [NSArray arrayWithObjects: @"-pa",  @"./site/ebin", 
                                               @"-pa", @"./site/include",
                                               @"-embded", @"-sname", @"rise",
-                                              @"-boot", [backendPath stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
+                                              @"-boot", [@"." stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
                                               @"-config", @"./etc/app.config",
                                               @"-config", @"./etc/bitmessage.config",
                                               @"-config",  @"./etc/cowboy.config",
