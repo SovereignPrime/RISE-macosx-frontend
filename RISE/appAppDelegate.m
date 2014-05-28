@@ -3,7 +3,7 @@
 //  RISE
 //
 //  Created by Mac User on 12/4/13.
-//  Copyright (c) 2013 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2013 Sovereign Prime. All rights reserved.
 //
 
 #import "appAppDelegate.h"
@@ -27,21 +27,20 @@
     [backendPath retain];
     NSFileManager *conf = [NSFileManager defaultManager];
     NSString *binPath = [backendPath stringByAppendingPathComponent: @"/erts-5.10.3/bin/erl"];
-    NSLog(binPath);
     [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
     NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"/releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
     vsn = [[[vsn componentsSeparatedByString: @" "] lastObject] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSArray *args = [NSArray arrayWithObjects: @"-pa", [backendPath stringByAppendingPathComponent: @"/site/ebin"], 
-                                              @"-pa", [backendPath stringByAppendingPathComponent:@"./site/include"],
+    NSArray *args = [NSArray arrayWithObjects: @"-pa",  @"./site/ebin", 
+                                              @"-pa", @"./site/include",
                                               @"-embded", @"-sname", @"rise",
                                               @"-boot", [backendPath stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
-                                              @"-config", [backendPath stringByAppendingPathComponent: @"/etc/app.config"],
-                                              @"-config", [backendPath stringByAppendingPathComponent: @"/etc/bitmessage.config" ],
-                                              @"-config", [backendPath stringByAppendingPathComponent: @"/etc/cowboy.config"],
-                                              @"-config", [backendPath stringByAppendingPathComponent:@"/etc/eminer.config"],
-                                              @"-config", [backendPath stringByAppendingPathComponent:@"/etc/etorrent.config"],
-                                              @"-config", [backendPath stringByAppendingPathComponent:@"/etc/sync.config"],
-                                              @"-args_file", [backendPath stringByAppendingPathComponent: @"/etc/vm.args"],
+                                              @"-config", @"./etc/app.config",
+                                              @"-config", @"./etc/bitmessage.config",
+                                              @"-config",  @"./etc/cowboy.config",
+                                              @"-config", @"./etc/eminer.config",
+                                              @"-config", @"./etc/etorrent.config",
+                                              @"-config", @"./etc/sync.config",
+                                              @"-args_file",  @"./etc/vm.args",
                      nil
                                               ];
     backend = [NSTask new];
@@ -49,6 +48,7 @@
     [env setObject: backendPath forKey: @"ROOTDIR"]; 
     [env setObject: [backendPath stringByAppendingPathComponent:@"/site/static"] forKey: @"DOC_ROOT"]; 
     [backend setEnvironment: env];
+    [backend setCurrentDirectoryPath:backendPath];
     [backend setArguments: args];
     [backend setLaunchPath: binPath ];
     [backend launch];
