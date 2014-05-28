@@ -28,8 +28,8 @@
     NSString *binPath = [backendPath stringByAppendingPathComponent: @"bin/rise"];
     NSLog(binPath);
     [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
-    backend = [NSTask launchedTaskWithLaunchPath: binPath arguments:[NSArray arrayWithObject:@"start"]];
-    [backend waitUntilExit];
+    backend = [NSTask launchedTaskWithLaunchPath: binPath arguments:[NSArray arrayWithObject:@"console"]];
+    // [backend waitUntilExit];
     while (![conf fileExistsAtPath: @"/tmp/rise.port"]);
     NSString *port = [NSString stringWithContentsOfFile: @"/tmp/rise.port" encoding: NSASCIIStringEncoding error: nil];
     NSString *url = [@"http://localhost:" stringByAppendingString: port];
@@ -39,9 +39,9 @@
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
 {
 
-    NSString * bin = [backendPath stringByAppendingPathComponent: @"bin/rise"]; 
-     backend = [NSTask launchedTaskWithLaunchPath:bin arguments:[NSArray arrayWithObject:@"stop"]];
-    return NSTerminateNow;
+    //NSString * bin = [backendPath stringByAppendingPathComponent: @"bin/rise"]; 
+    // backend = [NSTask launchedTaskWithLaunchPath:bin arguments:[NSArray arrayWithObject:@"stop"]];
+    //return NSTerminateNow;
 }
 - (void)webView:(WebView *)sender runOpenPanelForFileButtonWithResultListener:(id < WebOpenPanelResultListener >)resultListener
 {       
