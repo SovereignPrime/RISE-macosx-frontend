@@ -8,6 +8,7 @@
 
 #import "appAppDelegate.h"
 #import <Foundation/Foundation.h>
+#import <Foundation/NSProcessInfo.h>
 
 @implementation appAppDelegate
 
@@ -29,8 +30,8 @@
     NSLog(binPath);
     [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
     NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"/releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
-    vsn = [[[vsn companentsSeparatedByString: @" "] lastObject] stringByTrimmingCharractersInSet: [NSCharacterSet whitespaceCharacterSet]];
-    NSArray *args = [NSArray arrayWithObjects:@"-pa", [backendPath stringByAppendingPathComponent: @"/site/ebin"], 
+    vsn = [[[vsn componentsSeparatedByString: @" "] lastObject] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSArray *args = [NSArray arrayWithObjects: @"-pa", [backendPath stringByAppendingPathComponent: @"/site/ebin"], 
                                               @"-pa", [backendPath stringByAppendingPathComponent:@"./site/include"],
                                               @"-embded", @"-sname", @"rise",
                                               @"-boot", [backendPath stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
@@ -40,9 +41,17 @@
                                               @"-config", [backendPath stringByAppendingPathComponent:@"/etc/eminer.config"],
                                               @"-config", [backendPath stringByAppendingPathComponent:@"/etc/etorrent.config"],
                                               @"-config", [backendPath stringByAppendingPathComponent:@"/etc/sync.config"],
-                                              @"-args_file", [backendPath stringByAppendingPathComponent: @"/etc/vm.args"]
+                                              @"-args_file", [backendPath stringByAppendingPathComponent: @"/etc/vm.args"],
+                     nil
                                               ];
-    backend = [NSTask launchedTaskWithLaunchPath: binPath arguments: args];
+    backend = [NSTask new];
+    NSMutableDictionary *env = [NSMutableDictionary dictionaryWithDictionary: [[NSProcessInfo processInfo] environment]];
+    [env setObject: backendPath forKey: @"ROOTDIR"]; 
+    [env setObject: [backendPath stringByAppendingPathComponent:@"/site/static"] forKey: @"DOC_ROOT"]; 
+    [backend setEnvironment: env];
+    [backend setArguments: args];
+    [backend setLaunchPath: binPath ];
+    [backend launch];
     // [backend waitUntilExit];
     while (![conf fileExistsAtPath: @"/tmp/rise.port"]);
     NSString *port = [NSString stringWithContentsOfFile: @"/tmp/rise.port" encoding: NSASCIIStringEncoding error: nil];
@@ -52,7 +61,8 @@
 }
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
 {
-
+    [backend terminate];
+    [backend waitUntilExit];
     //NSString * bin = [backendPath stringByAppendingPathComponent: @"bin/rise"]; 
     // backend = [NSTask launchedTaskWithLaunchPath:bin arguments:[NSArray arrayWithObject:@"stop"]];
     //return NSTerminateNow;
