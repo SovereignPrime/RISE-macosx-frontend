@@ -52,9 +52,9 @@
     //[backend setEnvironment: env];
     [backend setCurrentDirectoryPath:backendPath];
     [backend setArguments: args];
-    //[backend setStandardOutput:[NSPipe pipe]];
-    //[backend setStandardError:[NSPipe pipe]];
-    //[backend setStandardInput:[NSPipe pipe]];
+    [backend setStandardOutput:[NSPipe pipe]];
+    [backend setStandardError:[NSPipe pipe]];
+    [backend setStandardInput:[NSPipe pipe]];
     [backend setLaunchPath: binPath ];
     
     [backend launch];
