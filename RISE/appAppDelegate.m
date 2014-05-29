@@ -136,7 +136,6 @@
                      frame:(WebFrame *)frame 
           decisionListener:(id < WebPolicyDecisionListener >)listener
 {
-    NSLog(type);
     if([type isEqualToString:@"octet/binary"])
     {
         [listener download];
