@@ -26,12 +26,12 @@
     backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
     [backendPath retain];
     NSFileManager *conf = [NSFileManager defaultManager];
-    NSString *binPath = [backendPath stringByAppendingPathComponent: @"bin/rise"]; //@"erts-5.10.3/bin/erlexec"];
+    NSString *binPath = [backendPath stringByAppendingPathComponent:@"erts-5.10.3/bin/erl"];
     [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
     NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
     
     vsn = [[[vsn componentsSeparatedByString: @" "] lastObject] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSArray *args = [NSArray arrayWithObjects: @"console", /* @"-pa",  @"./site/ebin", 
+    NSArray *args = [NSArray arrayWithObjects: @"-pa",  @"./site/ebin", 
                                               @"-pa", @"./site/include",
                                               @"-embded", @"-sname", @"rise",
                                               @"-boot", [@"." stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
@@ -41,38 +41,57 @@
                                               @"-config", @"./etc/eminer.config",
                                               @"-config", @"./etc/etorrent.config",
                                               @"-config", @"./etc/sync.config",
-                                              @"-args_file",  @"./etc/vm.args",*/
+                                              @"-args_file",  @"./etc/vm.args",
                      nil
                                               ];
     backend = [NSTask new];
     NSMutableDictionary *env = [NSMutableDictionary dictionaryWithDictionary: [[NSProcessInfo processInfo] environment]];
     
-    //[env setObject: backendPath forKey: @"ROOTDIR"]; 
-    //[env setObject: [backendPath stringByAppendingPathComponent:@"/site/static"] forKey: @"DOC_ROOT"]; 
-    //[backend setEnvironment: env];
+    [env setObject: backendPath forKey: @"ROOTDIR"]; 
+    [env setObject: [backendPath stringByAppendingPathComponent:@"/site/static"] forKey: @"DOC_ROOT"]; 
+    [backend setEnvironment: env];
     [backend setCurrentDirectoryPath:backendPath];
     [backend setArguments: args];
-    [backend setStandardOutput:[NSPipe pipe]];
+    NSPipe *mstdout = [NSPipe pipe];
+    [backend setStandardOutput: mstdout];
     [backend setStandardError:[NSPipe pipe]];
     [backend setStandardInput:[NSPipe pipe]];
     [backend setLaunchPath: binPath ];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationListener:) name:NSFileHandleReadCompletionNotification object:nil];
     
     [backend launch];
-    // [backend waitUntilExit];
-    while (![conf fileExistsAtPath: @"/tmp/rise.port"]);
-    NSString *port = [NSString stringWithContentsOfFile: @"/tmp/rise.port" encoding: NSASCIIStringEncoding error: nil];
-    NSString *url = [@"http://localhost:" stringByAppendingString: port];
-    id responce = [NSURLRequest requestWithURL:[NSURL URLWithString: url]];
-    [[self.webUI mainFrame] loadRequest:responce];
+    [[mstdout fileHandleForReading] readInBackgroundAndNotify];
 }
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
 {
     [backend terminate];
     [backend waitUntilExit];
-    //NSString * bin = [backendPath stringByAppendingPathComponent: @"bin/rise"]; 
-    // backend = [NSTask launchedTaskWithLaunchPath:bin arguments:[NSArray arrayWithObject:@"stop"]];
-    //return NSTerminateNow;
+    return NSTerminateNow;
 }
+
+- (void)notificationListener:(NSNotification *)notification
+{
+    NSData *data = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
+    if ([data length] > 0) {
+        NSString *str = [NSString stringWithUTF8String: [data bytes]];
+        NSScanner * scan = [NSScanner scannerWithString:str];
+        NSString *str1;
+        [scan scanUpToString:@"0.0.0.0:" intoString: NULL];
+        if (![scan isAtEnd]) {
+            [scan setScanLocation:[scan scanLocation] + 8];
+            int port;
+            [scan scanInt:&port];
+            NSString *url = [NSString stringWithFormat: @"http://localhost:%d", port];
+            id responce = [NSURLRequest requestWithURL:[NSURL URLWithString: url]];
+            [[self.webUI mainFrame] loadRequest:responce];
+        } else {
+            [[notification object] readInBackgroundAndNotify];
+        }
+            
+    }
+    
+}
+
 - (void)webView:(WebView *)sender runOpenPanelForFileButtonWithResultListener:(id < WebOpenPanelResultListener >)resultListener
 {       
     // Create the File Open Dialog class.
