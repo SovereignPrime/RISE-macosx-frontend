@@ -41,7 +41,6 @@
     if ([data length] > 0) {
         NSString *str = [NSString stringWithUTF8String: [data bytes]];
         NSScanner * scan = [NSScanner scannerWithString:str];
-        NSString *str1;
         [scan scanUpToString:@"0.0.0.0:" intoString: NULL];
         if (![scan isAtEnd]) {
             [scan setScanLocation:[scan scanLocation] + 8];
@@ -57,7 +56,6 @@
     }
     
 }
-
 - (void)webView:(WebView *)sender runOpenPanelForFileButtonWithResultListener:(id < WebOpenPanelResultListener >)resultListener
 {       
     // Create the File Open Dialog class.
@@ -107,8 +105,6 @@
         [listener download];
     }
 }
-
-
 - (void)startBackend
 {
     NSFileManager *conf = [NSFileManager defaultManager];
@@ -160,8 +156,9 @@
 - (void)backendTerminteNotification:(NSNotification *)notification
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    int status = [backend terminationstatus];
+    int status = [backend terminationStatus];
     NSLog(@"Stopped accidentally status: %d\n", status);
+    [self startBackend];
 }
 @end
 
