@@ -25,42 +25,7 @@
 {
     backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
     [backendPath retain];
-    NSFileManager *conf = [NSFileManager defaultManager];
-    NSString *binPath = [backendPath stringByAppendingPathComponent:@"erts-5.10.3/bin/erl"];
-    [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
-    NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
-    
-    vsn = [[[vsn componentsSeparatedByString: @" "] lastObject] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSArray *args = [NSArray arrayWithObjects: @"-pa",  @"./site/ebin", 
-                                              @"-pa", @"./site/include",
-                                              @"-embded", @"-sname", @"rise",
-                                              @"-boot", [@"." stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
-                                              @"-config", @"./etc/app.config",
-                                              @"-config", @"./etc/bitmessage.config",
-                                              @"-config",  @"./etc/cowboy.config",
-                                              @"-config", @"./etc/eminer.config",
-                                              @"-config", @"./etc/etorrent.config",
-                                              @"-config", @"./etc/sync.config",
-                                              @"-args_file",  @"./etc/vm.args",
-                     nil
-                                              ];
-    backend = [NSTask new];
-    NSMutableDictionary *env = [NSMutableDictionary dictionaryWithDictionary: [[NSProcessInfo processInfo] environment]];
-    
-    [env setObject: backendPath forKey: @"ROOTDIR"]; 
-    [env setObject: [backendPath stringByAppendingPathComponent:@"/site/static"] forKey: @"DOC_ROOT"]; 
-    [backend setEnvironment: env];
-    [backend setCurrentDirectoryPath:backendPath];
-    [backend setArguments: args];
-    NSPipe *mstdout = [NSPipe pipe];
-    [backend setStandardOutput: mstdout];
-    [backend setStandardError:[NSPipe pipe]];
-    [backend setStandardInput:[NSPipe pipe]];
-    [backend setLaunchPath: binPath ];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationListener:) name:NSFileHandleReadCompletionNotification object:nil];
-    
-    [backend launch];
-    [[mstdout fileHandleForReading] readInBackgroundAndNotify];
+    [self startBackend];
 }
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
 {
@@ -143,6 +108,62 @@
 }
 
 
+- (void)startBackend
+{
+    NSFileManager *conf = [NSFileManager defaultManager];
+    NSString *binPath = [backendPath stringByAppendingPathComponent:@"erts-5.10.3/bin/erl"];
+    [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
+    NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
+    
+    vsn = [[[vsn componentsSeparatedByString: @" "] lastObject] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSArray *args = [NSArray arrayWithObjects: @"-pa",  @"./site/ebin", 
+                                              @"-pa", @"./site/include",
+                                              @"-embded", @"-sname", @"rise",
+                                              @"-boot", [@"." stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
+                                              @"-config", @"./etc/app.config",
+                                              @"-config", @"./etc/bitmessage.config",
+                                              @"-config",  @"./etc/cowboy.config",
+                                              @"-config", @"./etc/eminer.config",
+                                              @"-config", @"./etc/etorrent.config",
+                                              @"-config", @"./etc/sync.config",
+                                              @"-args_file",  @"./etc/vm.args",
+                     nil
+                                              ];
+    backend = [NSTask new];
+    NSMutableDictionary *env = [NSMutableDictionary dictionaryWithDictionary: [[NSProcessInfo processInfo] environment]];
+    
+    [env setObject: backendPath forKey: @"ROOTDIR"]; 
+    [env setObject: [backendPath stringByAppendingPathComponent:@"/site/static"] forKey: @"DOC_ROOT"]; 
+    [backend setEnvironment: env];
+    [backend setCurrentDirectoryPath:backendPath];
+    [backend setArguments: args];
+    NSPipe *mstdout = [NSPipe pipe];
+    [backend setStandardOutput: mstdout];
+    [backend setStandardError:[NSPipe pipe]];
+    [backend setStandardInput:[NSPipe pipe]];
+    [backend setLaunchPath: binPath ];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(notificationListener:) 
+                                                 name:NSFileHandleReadCompletionNotification 
+                                               object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(backendTerminteNotification:) 
+                                                 name:NSTaskDidTerminateNotification
+                                               object:nil];
+    
+    [backend launch];
+    [[mstdout fileHandleForReading] readInBackgroundAndNotify];
+}
+
+- (void)backendTerminteNotification:(NSNotification *)notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    if (backend terminationStatus] != ATASK_SUCCESS_VALUE) {
+        NSLog("Stopped accidentally\n");
+    } else {
+        NSLog("Exited\n");
+    }
+}
 @end
 
