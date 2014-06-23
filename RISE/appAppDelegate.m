@@ -29,6 +29,7 @@
 }
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
 {
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
     [backend terminate];
     [backend waitUntilExit];
     return NSTerminateNow;
@@ -159,11 +160,8 @@
 - (void)backendTerminteNotification:(NSNotification *)notification
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    if (backend terminationStatus] != ATASK_SUCCESS_VALUE) {
-        NSLog("Stopped accidentally\n");
-    } else {
-        NSLog("Exited\n");
-    }
+    int status = [backend terminationstatus];
+    NSLog(@"Stopped accidentally status: %d\n", status);
 }
 @end
 
