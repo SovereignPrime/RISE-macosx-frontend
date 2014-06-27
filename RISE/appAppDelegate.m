@@ -115,7 +115,7 @@
     vsn = [[[vsn componentsSeparatedByString: @" "] lastObject] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSArray *args = [NSArray arrayWithObjects: @"-pa",  @"./site/ebin", 
                                               @"-pa", @"./site/include",
-                                              @"-embded", @"-sname", @"rise",
+                                              @"-embded", @"-name", @"rise@127.0.0.1",
                                               @"-boot", [@"." stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
                                               @"-config", @"./etc/app.config",
                                               @"-config", @"./etc/bitmessage.config",
