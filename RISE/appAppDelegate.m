@@ -108,7 +108,7 @@
 - (void)startBackend
 {
     NSFileManager *conf = [NSFileManager defaultManager];
-    NSString *binPath = [backendPath stringByAppendingPathComponent:@"erts-5.10.3/bin/erl"];
+    NSString *binPath = [backendPath stringByAppendingPathComponent:@"erts-6.1/bin/erl"];
     [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
     NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
     
