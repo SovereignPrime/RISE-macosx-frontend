@@ -7,8 +7,10 @@
 //
 
 #import "appAppDelegate.h"
+#import "DrawHelper.h"
 #import <Foundation/Foundation.h>
 #import <Foundation/NSProcessInfo.h>
+#import <objc/runtime.h>
 
 @implementation appAppDelegate
 
@@ -23,6 +25,26 @@
 	
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    id _class = [[[self.window contentView] superview] class];
+    
+    // Exchange drawRect:
+    Method m0 = class_getInstanceMethod([DrawHelper class], @selector(drawRect:));
+    class_addMethod(_class, @selector(drawRectOriginal:), method_getImplementation(m0), method_getTypeEncoding(m0));
+    
+    Method m1 = class_getInstanceMethod(_class, @selector(drawRect:));
+    Method m2 = class_getInstanceMethod(_class, @selector(drawRectOriginal:));
+    
+    method_exchangeImplementations(m1, m2);
+    
+    // Exchange _drawTitleStringIn:withColor:
+    Method m3 = class_getInstanceMethod([DrawHelper class], @selector(_drawTitleStringIn:withColor:));
+    class_addMethod(_class, @selector(_drawTitleStringOriginalIn:withColor:), method_getImplementation(m3), method_getTypeEncoding(m3));
+    
+    Method m4 = class_getInstanceMethod(_class, @selector(_drawTitleStringIn:withColor:));
+    Method m5 = class_getInstanceMethod(_class, @selector(_drawTitleStringOriginalIn:withColor:));
+    
+    method_exchangeImplementations(m4, m5);
+
     backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
     [backendPath retain];
     [self startBackend];

@@ -50,12 +50,12 @@
     // get current context
     CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
     // multiply mode - for colorizing original border
-    CGContextSetBlendMode(context, kCGBlendModeMultiply);
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
     
     // draw background
     if (!gFrameColor)
         // default bg color
-        gFrameColor = [NSColor colorWithCalibratedRed: (126 / 255.0) green: (161 / 255.0) blue: (177 / 255.0) alpha: 1.0];
+        gFrameColor = [NSColor colorWithCalibratedRed: (255) green: (255) blue: (255) alpha: 1.0];
     
     [gFrameColor set];
     
@@ -72,7 +72,7 @@
 {
     if (!gTitleColor)
         // default text color
-        gTitleColor = [NSColor colorWithCalibratedRed: 1.0 green: 1.0 blue: 1.0 alpha: 1.0];
+        gTitleColor = [NSColor colorWithCalibratedRed: 0 green: 0 blue: 0 alpha: 1.0];
     [self _drawTitleStringOriginalIn: rect withColor: gTitleColor];
 }
 
