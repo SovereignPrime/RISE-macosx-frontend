@@ -53,9 +53,8 @@
     CGContextSetBlendMode(context, kCGBlendModeNormal);
     
     // draw background
-    if (!gFrameColor)
-        // default bg color
-        gFrameColor = [NSColor colorWithCalibratedRed: (255) green: (255) blue: (255) alpha: 1.0];
+    // default bg color
+    gFrameColor = [NSColor colorWithCalibratedRed: (255) green: (255) blue: (255) alpha: 1.0];
     
     [gFrameColor set];
     
