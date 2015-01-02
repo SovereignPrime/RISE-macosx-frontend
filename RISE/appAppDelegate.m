@@ -44,7 +44,8 @@
     Method m5 = class_getInstanceMethod(_class, @selector(_drawTitleStringOriginalIn:withColor:));
     
     method_exchangeImplementations(m4, m5);
-
+    
+    [self.window setTitlebarAppearsTransparent:YES];
     backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
     [backendPath retain];
     [self startBackend];
