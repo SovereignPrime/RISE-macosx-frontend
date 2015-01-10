@@ -79,6 +79,13 @@
     }
     
 }
+
+- (void)receiveWakeNote: (NSNotification *) note
+{
+    NSLog(@"Wake note: %@", [note name]);
+    [self.webUI reload:self];
+}
+
 - (void)webView:(WebView *)sender runOpenPanelForFileButtonWithResultListener:(id < WebOpenPanelResultListener >)resultListener
 {       
     // Create the File Open Dialog class.
@@ -171,6 +178,10 @@
                                              selector:@selector(backendTerminteNotification:) 
                                                  name:NSTaskDidTerminateNotification
                                                object:nil];
+    
+    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
+                                                           selector: @selector(receiveWakeNote:)
+                                                               name: NSWorkspaceDidWakeNotification object: NULL];
     
     [backend launch];
     [[mstdout fileHandleForReading] readInBackgroundAndNotify];
