@@ -102,14 +102,17 @@
         NSArray* URLs = [openDlg URLs];
         NSMutableArray *files = [[NSMutableArray alloc]init];
         for (int i = 0; i <[URLs count]; i++) {
-            NSString *filename = [[URLs objectAtIndex:i]relativePath];
+            NSString *filename = [[URLs objectAtIndex:i] absoluteString];
             [files addObject:filename];
         }
         
         for(int i = 0; i < [files count]; i++ )
         {
             NSString* fileName = [files objectAtIndex:i];
-            [resultListener chooseFilename:fileName]; 
+            NSLog(@"%@\n", fileName);
+            id win = [sender windowScriptObject];
+            [win evaluateWebScript:[NSString stringWithFormat:@"upload('%@');", fileName]];
+            [resultListener chooseFilename:@"fileName"];
         }
         [files release];
     }
