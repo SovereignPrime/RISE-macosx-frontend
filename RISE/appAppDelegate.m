@@ -48,6 +48,9 @@
     [self.window setTitlebarAppearsTransparent:YES];
     backendPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/Contents/Backend"];
     [backendPath retain];
+   /* NSString *url = [NSString stringWithFormat: @"http://localhost:%d", 8000];
+    id responce = [NSURLRequest requestWithURL:[NSURL URLWithString: url]];
+    [[self.webUI mainFrame] loadRequest:responce];*/
     [self startBackend];
 }
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
@@ -84,6 +87,16 @@
 {
     NSLog(@"Wake note: %@", [note name]);
     [self.webUI reload:self];
+}
+
+-(void)webView:(WebView *)webView willPerformDragDestinationAction:(WebDragDestinationAction)action forDraggingInfo:(id<NSDraggingInfo>)draggingInfo
+{
+    NSPasteboard *pbord = [draggingInfo draggingPasteboard];
+    if ([[pbord types] containsObject:NSFilenamesPboardType]) {
+    NSArray *files = [pbord propertyListForType:NSFilenamesPboardType];
+    id win = [webView windowScriptObject];
+    [win evaluateWebScript:[NSString stringWithFormat:@"upload('%@');", [files lastObject]]];
+    }
 }
 
 - (void)webView:(WebView *)sender runOpenPanelForFileButtonWithResultListener:(id < WebOpenPanelResultListener >)resultListener
