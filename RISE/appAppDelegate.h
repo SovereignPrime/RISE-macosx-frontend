@@ -13,8 +13,9 @@
 
 @interface appAppDelegate : NSObject <NSApplicationDelegate>
 {
- id backend;
+    id backend;
     NSString * backendPath;
+    id win;
  }
 
 @property (assign) IBOutlet NSWindow *window;

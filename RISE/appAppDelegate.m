@@ -75,6 +75,7 @@
             NSString *url = [NSString stringWithFormat: @"http://localhost:%d", port];
             id responce = [NSURLRequest requestWithURL:[NSURL URLWithString: url]];
             [[self.webUI mainFrame] loadRequest:responce];
+            win = [self.webUI windowScriptObject];
         } else {
             [[notification object] readInBackgroundAndNotify];
         }
@@ -94,7 +95,7 @@
     NSPasteboard *pbord = [draggingInfo draggingPasteboard];
     if ([[pbord types] containsObject:NSFilenamesPboardType]) {
     NSArray *files = [pbord propertyListForType:NSFilenamesPboardType];
-    id win = [webView windowScriptObject];
+    
     [win evaluateWebScript:[NSString stringWithFormat:@"upload('%@');", [files lastObject]]];
     }
 }
@@ -123,7 +124,6 @@
         {
             NSString* fileName = [files objectAtIndex:i];
             NSLog(@"%@\n", fileName);
-            id win = [sender windowScriptObject];
             [win evaluateWebScript:[NSString stringWithFormat:@"upload('%@');", fileName]];
             [resultListener chooseFilename:@"fileName"];
         }
@@ -137,7 +137,8 @@
     if ([savePanel runModal] == NSOKButton ) 
     {
         NSString *path = [[savePanel URL] path];
-        [download setDestination: path allowOverwrite:YES];
+        //[download setDestination: path allowOverwrite:YES];
+        [win evaluateWebScript:[NSString stringWithFormat:@"download('%@');", path]];
     }
 }
 - (void)webView:(WebView *)webView 
