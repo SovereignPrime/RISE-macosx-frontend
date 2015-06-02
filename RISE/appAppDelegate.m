@@ -138,7 +138,7 @@
     {
         NSString *path = [[savePanel URL] path];
         //[download setDestination: path allowOverwrite:YES];
-        [win evaluateWebScript:[NSString stringWithFormat:@"download('%@');", path]];
+        [win evaluateWebScript:[NSString stringWithFormat:@"download('%@', '%@');", filename, path]];
     }
 }
 - (void)webView:(WebView *)webView 
