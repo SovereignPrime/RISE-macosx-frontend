@@ -160,18 +160,8 @@
     NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
     
     vsn = [[[vsn componentsSeparatedByString: @" "] lastObject] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSArray *args = [NSArray arrayWithObjects: @"-pa",  @"./site/ebin", 
-                                              @"-pa", @"./site/include",
-                                              @"-embded", @"-name", @"rise@127.0.0.1",
-                                              @"-boot", [@"." stringByAppendingFormat: @"%@%@%@", @"/releases/", vsn, @"/rise"],
-                                              @"-config", @"./etc/app.config",
-                                              @"-config", @"./etc/bitmessage.config",
-                                              @"-config",  @"./etc/cowboy.config",
-                                              @"-config", @"./etc/eminer.config",
-                                              @"-config", @"./etc/etorrent.config",
-                                              @"-config", @"./etc/sync.config",
-                                              @"-args_file",  @"./etc/vm.args",
-                     nil
+    NSArray *args = [NSArray arrayWithObjects:  @"-args_file",  @"./etc/vm.args",
+                        nil
                                               ];
     backend = [NSTask new];
     NSMutableDictionary *env = [NSMutableDictionary dictionaryWithDictionary: [[NSProcessInfo processInfo] environment]];
