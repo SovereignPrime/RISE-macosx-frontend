@@ -215,7 +215,7 @@
 			name = RISETests;
 			productName = RISETests;
 			productReference = 63F4D90B184FA3EA00358508 /* RISETests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -223,6 +223,7 @@
 		63F4D8E1184FA3E900358508 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0700;
 				LastUpgradeCheck = 0420;
 			};
 			buildConfigurationList = 63F4D8E4184FA3E900358508 /* Build configuration list for PBXProject "RISE" */;
