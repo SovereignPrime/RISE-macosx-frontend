@@ -72,7 +72,7 @@
             [scan setScanLocation:[scan scanLocation] + 8];
             int port;
             [scan scanInt:&port];
-            NSString *url = [NSString stringWithFormat: @"http://localhost:%d", 8003];
+            NSString *url = [NSString stringWithFormat: @"http://localhost:%d", port];
             id responce = [NSURLRequest requestWithURL:[NSURL URLWithString: url]];
             [[self.webUI mainFrame] loadRequest:responce];
             win = [self.webUI windowScriptObject];
@@ -155,7 +155,7 @@
 - (void)startBackend
 {
     NSFileManager *conf = [NSFileManager defaultManager];
-    NSString *binPath = [backendPath stringByAppendingPathComponent:@"erts-6.2/bin/erl"];
+    NSString *binPath = [backendPath stringByAppendingPathComponent:@"erts-7.1/bin/erl"];
     [conf removeItemAtPath:@"/tmp/rise.port" error:nil];
     NSString *vsn = [NSString stringWithContentsOfFile: [backendPath stringByAppendingPathComponent: @"releases/start_erl.data"] encoding: NSASCIIStringEncoding error:nil];
     
