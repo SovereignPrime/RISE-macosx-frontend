@@ -72,8 +72,8 @@
             [scan setScanLocation:[scan scanLocation] + 8];
             int port;
             [scan scanInt:&port];
-            NSString *url = [NSString stringWithFormat: @"http://ya.ru", port];
-            NSURLRequest *responce = [NSURLRequest requestWithURL:[NSURL URLWithString: @"http://localhost:8003"]];
+            NSString *url = [NSString stringWithFormat: @"http://localhost:%d", port];
+            NSURLRequest *responce = [NSURLRequest requestWithURL:[NSURL URLWithString: url]];
             [[self.webUI mainFrame] loadRequest:responce];
             win = [self.webUI windowScriptObject];
         } else {
